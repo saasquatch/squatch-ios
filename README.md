@@ -14,14 +14,14 @@ The easiest way to render a widget in your application is to use the `SaaSquatch
 
 Import the packages:
 
-```
+```swift
 import SaaSquatch
 import SaaSquatchWebView
 ```
 
 Create a `SaaSquatchClient` using your tenant alias:
 
-```            
+```swift
 let clientOptions = try ClientOptions.Builder()
    .setTenantAlias("<tenant_alias>")
    .build()
@@ -30,7 +30,7 @@ let client = SaaSquatchClient(clientOptions)
 
 Create a `SaaSquatchWebView`, give it the client and set it as the view of your `UIViewController`:
 
-```
+```swift
 var sqWebView = SaaSquatchWebView()
 sqWebView.client = client
 self.view = sqWebView
@@ -38,7 +38,7 @@ self.view = sqWebView
 
 In your `viewDidLoad` or some other relevant place, perform a widget upsert:
 
-```        
+```swift
 let jwt = "<user jwt>" 
 
 do {
@@ -54,7 +54,7 @@ do {
 ```
 
 Here's a full example:
-```
+```swift
 import SwiftUI
 import UIKit
 
