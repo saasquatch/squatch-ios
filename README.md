@@ -2,7 +2,7 @@
 
 ## Description
 
-This project projects an API wrapper for SaaSquatch and a simple to use WKWebView subclass which makes it easy to render referral widgets in your iOS Swift application.
+This project provides an API wrapper for SaaSquatch and a simple to use WKWebView subclass which makes it easy to render referral widgets in your iOS Swift application.
 
 ## Installation
 
