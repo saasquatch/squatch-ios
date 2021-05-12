@@ -37,7 +37,8 @@ class WebViewController: UIViewController  {
         
         do {
             let clientOptions = try ClientOptions.Builder()
-                .setTenantAlias("<tenant_alias>")
+                .setTenantAlias("test_aisnwipcdkk5k")
+                .setAppDomain("staging.referralsaasquatch.com")
                 .build()
             
             let client = SaaSquatchClient(clientOptions)
@@ -53,12 +54,13 @@ class WebViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let jwt = "<jwt>"
+        let jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoibndjIiwiYWNjb3VudElkIjoibndjIiwiZW1haWwiOiJud2NAZXhhbXBsZS5jb20ifX0.vF4kJpgabt9heJDP8D5VBWXkQK2dVpHvhDCCJK7mEVc"
+
         
         do {
             let input = try WidgetUpsertInput.Builder()
                 .setUserInputWithUserJwt(jwt)
-                .setWidgetType(ProgramWidgetType(programId: "<program-id>", programWidgetKey: "referrerWidget"))
+                .setWidgetType(ProgramWidgetType(programId: "qa-program", programWidgetKey: "referrerWidget"))
                 .build()
             
             try sqWebView.widgetUpsert(input: input) { result in

@@ -3,7 +3,7 @@ import SwiftyJSON
 import WebKit
 import SaaSquatch
 
-public class SaaSquatchWebView: WKWebView {
+public class SaaSquatchWebView: WKWebView, WKUIDelegate {
     public var client: SaaSquatchClient?
     
     /**
@@ -85,6 +85,7 @@ public class SaaSquatchWebView: WKWebView {
     
     private func setWebViewContent(html: String) {
         DispatchQueue.main.async {
+            self.uiDelegate = self
             let htmlWithMeta = html.replacingOccurrences(of: "</head>", with: "<meta name=\"viewport\" content=\"initial-scale=1.0\" /></head>")
             self.loadHTMLString(htmlWithMeta, baseURL: URL(string: "https://fast.ssqt.io"))
         }
@@ -113,6 +114,20 @@ public class SaaSquatchWebView: WKWebView {
                 return
             }
         }
+    }
+    
+    public func webView(_ webView: WKWebView,
+                        createWebViewWith configuration: WKWebViewConfiguration,
+                        for navigationAction: WKNavigationAction,
+                        windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if let url = navigationAction.request.url, navigationAction.targetFrame == nil {
+            if url.description.lowercased().contains("http://")
+                || url.description.lowercased().contains("https://")
+                || url.description.lowercased().contains("mailto:")  {
+                UIApplication.shared.open(url)
+            }
+        }
+        return nil
     }
 }
 
