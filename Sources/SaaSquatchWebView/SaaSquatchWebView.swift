@@ -121,9 +121,7 @@ public class SaaSquatchWebView: WKWebView, WKUIDelegate {
                         for navigationAction: WKNavigationAction,
                         windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let url = navigationAction.request.url, navigationAction.targetFrame == nil {
-            if url.description.lowercased().contains("http://")
-                || url.description.lowercased().contains("https://")
-                || url.description.lowercased().contains("mailto:")  {
+            if url.scheme == "http" || url.scheme == "https" || url.scheme == "mailto" {
                 UIApplication.shared.open(url)
             }
         }
