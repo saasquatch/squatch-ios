@@ -54,7 +54,7 @@ class WebViewController: UIViewController  {
         super.viewDidLoad()
         
         let jwt = "<jwt>"
-        
+
         do {
             let input = try WidgetUpsertInput.Builder()
                 .setUserInputWithUserJwt(jwt)
