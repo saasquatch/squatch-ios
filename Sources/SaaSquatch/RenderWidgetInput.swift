@@ -131,11 +131,6 @@ public struct RenderWidgetInput {
          Returns: A `RenderWidgetInput` object built from the builder options.
         */
         public func build() throws -> RenderWidgetInput {
-            guard let user = user,
-                  let userJwt = userJwt else {
-                throw BuilderError.incompleteBuilder(builder: "RenderWidgetInput", reason: "must call setUser or setUserFromJwt")
-            }
-            
             guard let locale = locale else {
                 throw BuilderError.incompleteBuilder(builder: "RenderWidgetInput", reason: "must call setLocale")
             }
