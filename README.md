@@ -8,7 +8,7 @@ This project provides an API wrapper for SaaSquatch and a simple to use WKWebVie
 
 Add this to your project using Swift Package Manager. In Xcode that is simply: File > Swift Packages > Add Package Dependency... and you're done. 
 
-## Example
+## Quick start
 
 The easiest way to render a widget in your application is to use the `SaaSquatchWebView` in your `UIViewController`.
 
@@ -36,6 +36,25 @@ sqWebView.client = client
 self.view = sqWebView
 ```
 
+### Rendering a widget
+
+In your `viewDidLoad` or some other relevant place, render a widget:
+
+```swift
+  do {
+      let input = try RenderWidgetInput.Builder()
+          .setWidgetType(ProgramWidgetType(programId: "<program-id>", programWidgetKey: "referrerWidget"))
+          .build()
+      
+      try sqWebView.renderWidget(input: input) { result in
+          print(result)
+      }
+  } catch let error {
+      print(error)
+  }
+```
+
+### Rendering a widget and upserting a user
 In your `viewDidLoad` or some other relevant place, perform a widget upsert:
 
 ```swift
@@ -53,7 +72,7 @@ do {
 }
 ```
 
-Here's a full example:
+## Full example
 ```swift
 import SwiftUI
 import UIKit
