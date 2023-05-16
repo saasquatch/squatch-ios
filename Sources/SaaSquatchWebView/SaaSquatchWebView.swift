@@ -29,11 +29,14 @@ public class SaaSquatchWebView: WKWebView, WKUIDelegate {
                     programId = widgetType.programId
                 }
                 
-                try? self.recordWidgetLoadedAnalytic(
-                    user: input.user,
-                    userJwt: input.userJwt,
-                    programId: programId
-                )
+                if let user = input.user, let userJwt = input.userJwt {
+                    try? self.recordWidgetLoadedAnalytic(
+                        user: user,
+                        userJwt: userJwt,
+                        programId: programId
+                    )
+                }
+                
 
                 if let completion = completion {
                     completion(.success(()))

@@ -51,7 +51,7 @@ public final class SaaSquatchClient {
      
      - Throws: `SaaSquatchClientError`if there is a failure making the request.
     */
-    public func graphQL(input: GraphQLInput, userJwt: String, completion: @escaping ResultHandler<JSON>) throws {
+    public func graphQL(input: GraphQLInput, userJwt: String?, completion: @escaping ResultHandler<JSON>) throws {
         let pathComponents = ["/api", "v1", self.clientOptions.tenantAlias, "graphql"]
         
         var urlComponents = URLComponents()
@@ -63,8 +63,11 @@ public final class SaaSquatchClient {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = try JSONEncoder().encode(input)
-            request.addValue("Bearer \(userJwt)", forHTTPHeaderField: "Authorization")
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            if userJwt != nil {
+                request.addValue("Bearer \(userJwt!)", forHTTPHeaderField: "Authorization")
+            }
             
             executeRequest(request) { (result: Result<JSON, SaaSquatchClientError>) in
                 switch result {
@@ -94,10 +97,12 @@ public final class SaaSquatchClient {
     */
     public func renderWidget(_ input: RenderWidgetInput, completion: @escaping ResultHandler<String>) throws {
         var variables: JSON = [
-            "user": ["id": input.user.userId, "accountId": input.user.accountId],
             "engagementMedium": input.engagementMedium,
             "locale": input.locale,
         ]
+        if let user = input.user {
+            variables["user"] = ["id": user.userId, "accountId": user.accountId ]
+        }
         if let widgetType = input.widgetType {
             variables["widgetType"].string = widgetType.widgetType
         }

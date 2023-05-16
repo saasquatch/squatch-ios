@@ -2,8 +2,8 @@
  Provides all of the input parameters required to perform a render widget operation.
  */
 public struct RenderWidgetInput {
-    public let user: UserIdInput
-    public let userJwt: String
+    public let user: UserIdInput?
+    public let userJwt: String?
     public let widgetType: WidgetType?
     public let engagementMedium: String
     public let locale: String
@@ -131,11 +131,6 @@ public struct RenderWidgetInput {
          Returns: A `RenderWidgetInput` object built from the builder options.
         */
         public func build() throws -> RenderWidgetInput {
-            guard let user = user,
-                  let userJwt = userJwt else {
-                throw BuilderError.incompleteBuilder(builder: "RenderWidgetInput", reason: "must call setUser or setUserFromJwt")
-            }
-            
             guard let locale = locale else {
                 throw BuilderError.incompleteBuilder(builder: "RenderWidgetInput", reason: "must call setLocale")
             }
