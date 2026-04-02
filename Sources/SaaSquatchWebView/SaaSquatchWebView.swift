@@ -3,7 +3,7 @@ import SwiftyJSON
 import WebKit
 import SaaSquatch
 
-public class SaaSquatchWebView: WKWebView, WKUIDelegate {
+public class SaaSquatchWebView: WKWebView, WKUIDelegate, WKNavigationDelegate {
     public var client: SaaSquatchClient?
     
     /**
@@ -86,9 +86,12 @@ public class SaaSquatchWebView: WKWebView, WKUIDelegate {
         }
     }
     
+    private static let externalSchemes: Set<String> = ["mailto", "sms", "tel"]
+
     private func setWebViewContent(html: String) {
         DispatchQueue.main.async {
             self.uiDelegate = self
+            self.navigationDelegate = self
             let htmlWithMeta = html.replacingOccurrences(of: "</head>", with: "<meta name=\"viewport\" content=\"initial-scale=1.0\" /></head>")
             self.loadHTMLString(htmlWithMeta, baseURL: URL(string: "https://fast.ssqt.io"))
         }
@@ -124,11 +127,24 @@ public class SaaSquatchWebView: WKWebView, WKUIDelegate {
                         for navigationAction: WKNavigationAction,
                         windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let url = navigationAction.request.url, navigationAction.targetFrame == nil {
-            if url.scheme == "http" || url.scheme == "https" || url.scheme == "mailto" {
+            if url.scheme == "http" || url.scheme == "https" {
                 UIApplication.shared.open(url)
             }
         }
         return nil
+    }
+
+    public func webView(_ webView: WKWebView,
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let url = navigationAction.request.url,
+           let scheme = url.scheme,
+           Self.externalSchemes.contains(scheme) {
+            UIApplication.shared.open(url)
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
     }
 }
 
