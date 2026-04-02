@@ -127,7 +127,8 @@ public class SaaSquatchWebView: WKWebView, WKUIDelegate, WKNavigationDelegate {
                         for navigationAction: WKNavigationAction,
                         windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let url = navigationAction.request.url, navigationAction.targetFrame == nil {
-            if url.scheme == "http" || url.scheme == "https" {
+            if url.scheme == "http" || url.scheme == "https"
+                || Self.externalSchemes.contains(url.scheme ?? "") {
                 UIApplication.shared.open(url)
             }
         }
